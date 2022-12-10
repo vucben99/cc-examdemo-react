@@ -1,27 +1,6 @@
 import { useState, useEffect } from 'react'
 import './App.css'
-
-
-
-function UserCard({ user }) {
-
-  const [isShown, setIsShown] = useState(false)
-
-  return (
-    <article className='usercard'>
-      <img src={user.avatar_url} alt={user.login} />
-      <p>{user.login}</p>
-      <button onClick={() => setIsShown(!isShown)}>
-        {isShown ? "Show less" : "Show more"}
-      </button>
-      {isShown && (
-        <div>
-          <p>Rank: {user.type}</p>
-          <p>Admin: {`${user.site_admin}`}</p>
-        </div>)}
-    </article>
-  )
-}
+import UserCard from './UserCard'
 
 function App() {
 
@@ -40,6 +19,8 @@ function App() {
     getUsers()
   }, [])
 
+  const filteredUsers = users ? users.filter(user => user.login.startsWith(search)) : []
+
   return (
     <>
       <header className='searchbar'>
@@ -47,7 +28,8 @@ function App() {
       </header>
 
       <main className="content">
-        {users ? users.filter(user => user.login.startsWith(search)).map(user => <UserCard user={user} key={user.login} />) : <p>Loading...</p>}
+        {!users && <p>Loading...</p>}
+        {users && <>{filteredUsers.length ? filteredUsers.map(user => <UserCard user={user} key={user.login} />) : <p>Nothing found</p>}</>}
       </main>
     </>
   )
