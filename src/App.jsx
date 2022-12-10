@@ -7,12 +7,12 @@ function App() {
   const [users, setUsers] = useState(null)
   const [search, setSearch] = useState("")
 
-  const getUsers = async () => {
+  async function getUsers() {
     const res = await fetch("https://api.github.com/users")
     const users = await res.json()
     setTimeout(() => {
       setUsers(users)
-    }, 1000);
+    }, 1000)
   }
 
   useEffect(() => {
